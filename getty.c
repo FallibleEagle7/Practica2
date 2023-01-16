@@ -8,10 +8,9 @@
 int main(int argc, char *argv[])
 {
     int autentication = 0;
-    
+    //Variables login
     char login[30];
     char password[30];
-    
     
     int p;
     

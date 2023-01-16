@@ -65,13 +65,25 @@ int main(int argc, char *argv[])
             args[i] = commands[i];
         }
         args[count] = NULL;
-        p = fork();
-        if(p == 0)
+        if(strcmp(commands[count - 1],"&") == 0)
         {
-            execvp(commands[0],args);
-            exit(0);
+            p = fork();
+            if(p == 0)
+            {
+                execvp(commands[0],args);
+                exit(0);
+            }
         }
-        wait(NULL);
+        else
+        {
+            p = fork();
+            if(p == 0)
+            {
+                execvp(commands[0],args);
+                exit(0);
+            }
+            wait(NULL);
+        }
         //No usar system, hay que usar exec, 
         //separar parámetros con los espacios
         //Si el comando que teclea el usuario termina con un &
