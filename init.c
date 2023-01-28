@@ -5,24 +5,34 @@
 #include <signal.h>
 
 #define NPROCS 6
+int pID[NPROCS];
 void signalHandler(int signal)
 {
-    printf("Matar a los procesos creados");
+    printf("KILL PROCESS\n");
+    for(int i = 0; i < NPROCS; i++)
+    {
+    	kill(pID[i],SIGKILL);
+    }
 }
 int main()
 {
-    char pid[7];
+    
+    int newP;
+    char pid[6];
+    
 
     signal(SIGUSR1,signalHandler);
-
+    
     sprintf(pid,"%d",getpid());
 
     for(int i = 0; i < NPROCS; i++)
     {
-        if(fork() == 0)
+    	newP = fork();
+        if(newP == 0)
         {
             execlp("xterm","xterm","-e","./getty",pid,NULL);
         }
+        pID[i] = newP;
     }
 
     for(int i = 0; i < NPROCS; i++)
